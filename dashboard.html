@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Dashboard – Quantilay</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fbfd;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: #fff;
+      padding: 15px 30px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header img {
+      height: 40px;
+      cursor: pointer;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-info div {
+      background: #3a6ea5;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+    .user-info span {
+      font-weight: 600;
+      color: #3a6ea5;
+    }
+    .user-info button {
+      padding: 6px 14px;
+      background: transparent;
+      border: 2px solid #3a6ea5;
+      border-radius: 4px;
+      color: #3a6ea5;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    .user-info button:hover {
+      background: #3a6ea5;
+      color: #fff;
+    }
+    main {
+      flex-grow: 1;
+      padding: 40px 30px;
+    }
+    .grid {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      flex: 1 1 200px;
+      text-align: center;
+      text-decoration: none;
+      color: #1a2c4d;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    .card h3 {
+      margin-top: 0;
+      color: #3a6ea5;
+    }
+    footer {
+      background: #fff;
+      text-align: center;
+      padding: 15px;
+      box-shadow: 0 -1px 8px rgba(0,0,0,0.05);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="logo.jpeg" alt="Quantilay Logo" onclick="location.href='index.html'"/>
+    <div class="user-info">
+      <div id="avatar"></div>
+      <span id="username"></span>
+      <button onclick="logout()">Log Out</button>
+    </div>
+  </header>
+
+  <main>
+    <h2>Welcome to your Dashboard!</h2>
+    <div class="grid">
+      <a href="simulations.html" class="card">
+        <h3>🔬 Simulations</h3>
+        <p>Interactive physics experiments.</p>
+      </a>
+      <a href="tasks.html" class="card">
+        <h3>🧩 Tasks</h3>
+        <p>Practice problems with solutions.</p>
+      </a>
+      <a href="theory.html" class="card">
+        <h3>📚 Theory</h3>
+        <p>Clear explanations and notes.</p>
+      </a>
+      <a href="competitions.html" class="card">
+        <h3>🏆 Competitions</h3>
+        <p>Olympiad preparation modules.</p>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Quantilay by Nilay Muzaffarli
+  </footer>
+
+  <script>
+    // Проверяем авторизацию
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+      window.location.href = 'login.html';
+    } else {
+      const { name } = JSON.parse(userData);
+      document.getElementById('avatar').textContent = name.charAt(0).toUpperCase();
+      document.getElementById('username').textContent = name;
+    }
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>

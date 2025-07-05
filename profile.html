@@ -1,0 +1,28 @@
+<!-- profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Profile</title>
+</head>
+<body>
+  <h2 id="greeting"></h2>
+  <button onclick="logout()">Log Out</button>
+
+  <script>
+    const username = localStorage.getItem('loggedInUser');
+    const greetingEl = document.getElementById('greeting');
+
+    if (username) {
+      greetingEl.textContent = `Hello, ${username}! Welcome to your profile.`;
+    } else {
+      greetingEl.textContent = 'You are not logged in.';
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

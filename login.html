@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Log In – Quantilay</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef5ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 360px;
+    }
+    h2 {
+      margin: 0 0 20px;
+      color: #3a6ea5;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .error {
+      color: #c0392b;
+      font-size: 13px;
+      height: 18px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #3a6ea5;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background: #2e5980;
+    }
+    .footer {
+      text-align: center;
+      font-size: 13px;
+    }
+    .footer a {
+      color: #3a6ea5;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h2>Log In</h2>
+    <form id="loginForm">
+      <input type="text" id="loginName" placeholder="Your Name" required />
+      <input type="email" id="loginEmail" placeholder="Your Email" required />
+      <div class="error" id="loginError"></div>
+      <button type="submit">Log In</button>
+    </form>
+    <div class="footer">
+      Don't have an account? <a href="signup.html">Sign Up</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('loginName').value.trim();
+      const email = document.getElementById('loginEmail').value.trim();
+      const err = document.getElementById('loginError');
+      if (!name || !email || !email.includes('@')) {
+        err.textContent = 'Please enter a valid name and email.';
+        return;
+      }
+      err.textContent = '';
+      localStorage.setItem('user', JSON.stringify({ name, email }));
+      window.location.href = 'dashboard.html';
+    });
+  </script>
+
+</body>
+</html>       

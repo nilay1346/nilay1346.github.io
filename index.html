@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quantilay — Physics Learning Platform</title>
+  <style>
+    /* Сброс и базовые стили */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fbfd;
+      color: #1a2c4d;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    /* Хедер */
+    header {
+      width: 100%; max-width: 1200px;
+      background: white;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      position: sticky; top: 0; z-index: 10;
+    }
+    header img {
+      height: 40px;
+      cursor: pointer;
+    }
+    nav {
+      display: flex;
+      gap: 12px;
+    }
+    nav button {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #3a6ea5;
+      background: transparent;
+      border: 2px solid #3a6ea5;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    nav button:hover {
+      background: #3a6ea5;
+      color: white;
+    }
+    /* Основной контент */
+    main {
+      width: 100%; max-width: 800px;
+      background: white;
+      margin: 40px 0;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    #tryButton {
+      padding: 16px 48px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+      background: #3a6ea5;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 8px 15px rgba(58,110,165,0.3);
+      margin-bottom: 32px;
+    }
+    #tryButton:hover {
+      background: #275588;
+      transform: translateY(-4px);
+    }
+    section.info {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #374785;
+      text-align: left;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    section.info p + p {
+      margin-top: 16px;
+    }
+    section.info strong {
+      color: #3a6ea5;
+      font-weight: 700;
+    }
+    .contact-button {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 12px 32px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: #3a6ea5;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .contact-button:hover {
+      background: #275588;
+    }
+    /* Форма контакта */
+    #contactForm {
+      display: none;
+      margin-top: 24px;
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #contactForm label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #3a6ea5;
+    }
+    #contactForm input, #contactForm textarea {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      resize: vertical;
+    }
+    #contactForm button {
+      display: block;
+      margin: 0 auto;
+      padding: 12px 36px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: #3a6ea5;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #contactForm button:hover {
+      background: #275588;
+    }
+    #submitMessage {
+      margin-top: 16px;
+      font-size: 1rem;
+      color: green;
+      text-align: center;
+      display: none;
+    }
+    @media(max-width:600px){
+      main { padding: 30px 20px; }
+      #tryButton { font-size: 1.2rem; padding: 14px 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <script>
+    // Автоматический редирект на Dashboard, если пользователь залогинен
+    window.onload = function() {
+      if (localStorage.getItem('user')) {
+        window.location.href = 'dashboard.html';
+      }
+    };
+  </script>
+
+  <header>
+    <img src="logo.jpeg" alt="Quantilay Logo" onclick="location.href='index.html'" />
+    <nav id="navButtons">
+      <button onclick="location.href='signup.html'">Sign Up</button>
+      <button onclick="location.href='login.html'">Log In</button>
+    </nav>
+  </header>
+
+  <main>
+    <button id="tryButton">Try Quantilay 🚀</button>
+
+    <section class="info">
+      <p><strong>Creator Nilay Muzaffarli</strong>, born in 2012 in Azerbaijan, is a young innovator and tech enthusiast. With deep interests in physics and education, she designed Quantilay to help students grow. Her work is driven by a vision to make learning accessible, motivational, and smart.</p>
+      <p>Quantilay provides interactive physics tasks, engaging theory, and community-driven olympiad preparation — all designed to empower curious minds.</p>
+      <p>Our mission is to inspire learning and fuel passion for physics through innovation and smart technology.</p>
+      <a href="#" class="contact-button" id="contactBtn">📬 Contact Nilay here</a>
+
+      <form id="contactForm"
+            action="https://formspree.io/f/xkgbkyra"
+            method="POST">
+        <input type="hidden" name="_replyto" id="formReplyTo" />
+
+        <label for="name">Your Name</label>
+        <input type="text" name="name" id="name" placeholder="Enter your name" required />
+
+        <label for="email">Your Email</label>
+        <input type="email" name="email" id="email" placeholder="Enter your email" required />
+
+        <label for="message">Your Message</label>
+        <textarea name="message" id="message" rows="4" placeholder="Write your message..." required></textarea>
+
+        <button type="submit">Send Message</button>
+      </form>
+
+      <div id="submitMessage">Thank you! Your message has been sent.</div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('tryButton').onclick = function() {
+      const user = localStorage.getItem('user');
+      if (user) {
+        window.location.href = 'dashboard.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    };
+
+    const contactBtn = document.getElementById('contactBtn');
+    const contactForm = document.getElementById('contactForm');
+    const submitMsg = document.getElementById('submitMessage');
+    const replyTo = document.getElementById('formReplyTo');
+    const emailInput = document.getElementById('email');
+
+    contactBtn.onclick = e => {
+      e.preventDefault();
+      contactForm.style.display = contactForm.style.display === 'block' ? 'none' : 'block';
+      submitMsg.style.display = 'none';
+      if (contactForm.style.display === 'block') contactForm.scrollIntoView({behavior:'smooth'});
+    };
+
+    contactForm.addEventListener('submit', function(e) {
+      replyTo.value = emailInput.value;
+      setTimeout(() => {
+        contactForm.style.display = 'none';
+        submitMsg.style.display = 'block';
+        contactForm.reset();
+      }, 500);
+    });
+  </script>
+
+</body>
+</html>

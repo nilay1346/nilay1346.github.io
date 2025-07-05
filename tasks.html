@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quantilay — Tasks</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f8fc;
+      margin: 0;
+      padding: 20px;
+      color: #1a2c4d;
+    }
+    .top-bar {
+      max-width: 700px;
+      margin: 0 auto 20px;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .home-button {
+      background: #3a6ea5;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 3px 7px rgba(58,110,165,0.5);
+      transition: background 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      font-size: 14px;
+    }
+    .home-button:hover {
+      background: #275588;
+    }
+    .user-profile {
+      max-width: 700px;
+      margin: 0 auto 20px;
+      background: #e6f0ff;
+      border-radius: 10px;
+      padding: 15px 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: #275588;
+    }
+    .user-profile div {
+      font-size: 16px;
+    }
+    h1 {
+      text-align: center;
+      color: #3a6ea5;
+      margin-bottom: 20px;
+    }
+    .filters {
+      max-width: 700px;
+      margin: 0 auto 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .filters select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+    }
+    .task-list {
+      max-width: 700px;
+      margin: auto;
+    }
+    .task-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      margin-bottom: 16px;
+      padding: 20px;
+    }
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      gap: 8px;
+    }
+    .task-difficulty,
+    .task-topic {
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: #e0ecff;
+      color: #275588;
+      font-size: 14px;
+    }
+    .task-status {
+      font-size: 20px;
+    }
+    .task-details {
+      margin-top: 10px;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+      display: none;
+    }
+    .answer-input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .format-note {
+      font-size: 12px;
+      color: #555;
+      margin-top: 5px;
+    }
+    .check-answer-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #3a6ea5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .answer-feedback {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    .no-tasks {
+      text-align: center;
+      color: #555;
+      margin: 40px 0;
+      font-size: 16px;
+    }
+    #confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 9999;
+    }
+    #confetti-container div {
+      position: absolute;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="./dashboard.html" class="home-button">Home</a>
+  </div>
+  <div class="user-profile">
+    <div><strong>Name:</strong> <span id="username"></span></div>
+    <div><strong>Solved tasks:</strong> <span id="solved-count">0</span> / <span id="total-tasks">0</span></div>
+    <div><strong>Score:</strong> <span id="rating-points">0</span> points</div>
+  </div>
+
+  <h1>Physics Tasks</h1>
+  <div class="filters">
+    <select id="filter-difficulty">
+      <option value="All">All</option>
+      <option>Very Easy</option>
+      <option>Easy</option>
+      <option>Medium</option>
+      <option>Hard</option>
+      <option>Very Hard</option>
+    </select>
+    <select id="filter-topic">
+      <option value="All">All</option>
+      <option>Uniform Linear Motion</option>
+      <option>Variable Linear Motion</option>
+      <option>Circular Motion</option>
+      <option>Oscillatory Motion</option>
+      <option>Forces</option>
+      <option>Friction Force</option>
+      <option>Gravitational Force</option>
+      <option>Tension Force</option>
+      <option>Newton’s Laws</option>
+      <option>Electricity and Magnetism</option>
+      <option>Resistance</option>
+      <option>Ohm’s Law</option>
+      <option>Electric Current</option>
+      <option>Voltage</option>
+      <option>Electric Circuits</option>
+      <option>Series Connection</option>
+      <option>Parallel Connection</option>
+      <option>Circuit Elements</option>
+      <option>Magnetic Fields</option>
+      <option>Atoms and Molecules</option>
+      <option>Electroscope</option>
+      <option>Atomic Structure</option>
+      <option>Molecular Bonds</option>
+      <option>Atomic Models</option>
+      <option>Intermolecular Forces</option>
+    </select>
+    <select id="filter-status">
+      <option value="All">All</option>
+      <option>Unanswered</option>
+      <option>Correct</option>
+      <option>Incorrect</option>
+    </select>
+    <select id="sort-by">
+      <option value="number">By Number</option>
+      <option value="popular">Popular First</option>
+    </select>
+  </div>
+
+  <div class="task-list" id="taskList"></div>
+  <div id="confetti-container"></div>
+
+<script>
+  let currentUser = '';
+  let TASKS_KEY = '';
+  let statusMap = {};
+
+  const tasks = [
+    {
+      id: 1,
+      title: "Braking Time and Distance",
+      difficulty: "Easy",
+      topic: "Variable Linear Motion",
+      popularity: 10,
+      condition: `
+        <p>The motion of a body is described by the equation:<br>
+        <strong>x = 20 + 10t − 2.5t²</strong> (in meters).<br>Calculate:</p>
+        <ol>
+          <li>The time when the body stops.</li>
+          <li>The braking distance.</li>
+          <li>The position of the body at the moment it stops.</li>
+        </ol>
+        <input type="text" class="answer-input" placeholder="Enter your answer here" />
+        <div class="format-note">(Please separate answers with a comma and a space)</div>
+        <button class="check-answer-btn">Check</button>
+        <div class="answer-feedback"></div>
+      `
+    },
+    {
+      id: 2,
+      title: "Velocity‑Time Graph Distance",
+      difficulty: "Medium",
+      topic: "Uniform Linear Motion",
+      popularity: 8,
+      condition: `
+        <div style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;">
+          <div style="flex:1 1 300px; min-width:250px;">
+            <p>The velocity‑time graphs of two bodies moving along a straight line are shown.<br>
+            Calculate the distance between them after <strong>16 s</strong> from the start.<br>
+            (Initial coordinates of both bodies are the same)</p>
+            <ul style="line-height:1.6">
+              <li>A) 160 m</li>
+              <li>B) 320 m</li>
+              <li>C) 720 m</li>
+              <li>D) 480 m</li>
+              <li>E) 240 m</li>
+            </ul>
+          </div>
+          <div style="flex:1 1 200px; text-align:center;">
+            <img src="task2-velocity-graph.png" alt="Velocity‑Time Graph" style="max-width:100%; border:1px solid #ccc; border-radius:8px; padding:4px;" />
+          </div>
+        </div>
+        <input type="text" class="answer-input" placeholder="Enter your answer here" />
+        <div class="format-note">(Enter the correct option letter)</div>
+        <button class="check-answer-btn">Check</button>
+        <div class="answer-feedback"></div>
+      `
+    }
+  ];
+
+  function launchConfetti() {
+    const container = document.getElementById('confetti-container');
+    const colors = ['#e91e63','#9c27b0','#3f51b5','#03a9f4','#4caf50','#ffeb3b','#ff9800','#f44336'];
+    const count = 100;
+    let conf = [];
+    for (let i = 0; i < count; i++) {
+      const d = document.createElement('div');
+      d.style.background = colors[Math.floor(Math.random()*colors.length)];
+      d.style.left = Math.random()*window.innerWidth + 'px';
+      d.style.top = '-10px';
+      d.style.width = '10px';
+      d.style.height = '4px';
+      d.style.borderRadius = '2px';
+      container.appendChild(d);
+      conf.push({el:d, x:parseFloat(d.style.left), y:-10, sway:Math.random()*0.1+0.05, speed:Math.random()*3+2, rotation:Math.random()*360, rotationSpeed:(Math.random()-0.5)*10});
+    }
+    let raf;
+    (function animate() {
+      conf.forEach((c, i) => {
+        c.y += c.speed;
+        c.x += Math.sin(c.y * c.sway) * 2;
+        c.rotation += c.rotationSpeed;
+        c.el.style.top = c.y + 'px';
+        c.el.style.left = c.x + 'px';
+        c.el.style.opacity = 1 - c.y / window.innerHeight;
+        c.el.style.transform = `rotate(${c.rotation}deg)`;
+        if (c.y > window.innerHeight) {
+          container.removeChild(c.el);
+          conf.splice(i, 1);
+        }
+      });
+      if (conf.length) raf = requestAnimationFrame(animate);
+      else container.innerHTML = '';
+    })();
+    setTimeout(() => { if (raf) cancelAnimationFrame(raf); container.innerHTML = ''; }, 3000);
+  }
+
+  function saveStatus() {
+    localStorage.setItem(TASKS_KEY, JSON.stringify(statusMap));
+  }
+
+  const taskList    = document.getElementById('taskList');
+  const totalTasks  = document.getElementById('total-tasks');
+  const solvedCount = document.getElementById('solved-count');
+  const ratingPts   = document.getElementById('rating-points');
+
+  function renderTasks() {
+    taskList.innerHTML = '';
+    const diff = document.getElementById('filter-difficulty').value;
+    const top  = document.getElementById('filter-topic').value;
+    const stat = document.getElementById('filter-status').value;
+    const sort = document.getElementById('sort-by').value;
+
+    let filtered = tasks
+      .map(t => ({ ...t, status: statusMap[t.id] || 'Unanswered' }))
+      .filter(t =>
+        (diff === 'All' || t.difficulty === diff) &&
+        (top === 'All' || t.topic === top) &&
+        (stat === 'All' || t.status === stat)
+      );
+
+    if (sort === 'number') filtered.sort((a, b) => a.id - b.id);
+    else filtered.sort((a, b) => b.popularity - a.popularity);
+
+    totalTasks.textContent = filtered.length;
+
+    if (!filtered.length) {
+      taskList.innerHTML = `<div class="no-tasks">No tasks found for selected filters.</div>`;
+      return;
+    }
+
+    filtered.forEach(t => {
+      const card = document.createElement('div');
+      card.className = 'task-card';
+      card.innerHTML = `
+        <div class="task-header">
+          <span>${t.id}.</span>
+          <span>${t.title}</span>
+          <span class="task-difficulty">${t.difficulty}</span>
+          <span class="task-topic">${t.topic}</span>
+          <span class="task-status">
+            ${t.status === 'Unanswered' ? '⚪' : t.status === 'Correct' ? '🟢' : '🔴'}
+          </span>
+        </div>
+        <div class="task-details">${t.condition}</div>
+      `;
+      taskList.appendChild(card);
+    });
+
+    attachEvents();
+    updateProfileUI();
+  }
+
+  function attachEvents() {
+    document.querySelectorAll('.task-header').forEach(h => {
+      h.onclick = () => {
+        const d = h.nextElementSibling;
+        d.style.display = d.style.display === 'block' ? 'none' : 'block';
+      };
+    });
+    document.querySelectorAll('.check-answer-btn').forEach(btn => {
+      btn.onclick = () => {
+        const card = btn.closest('.task-card');
+        const id = +card.querySelector('.task-header span').textContent;
+        const input = card.querySelector('.answer-input');
+        const feedback = card.querySelector('.answer-feedback');
+        const statusEl = card.querySelector('.task-status');
+        const ans = input.value.trim().toLowerCase();
+        let correct = false;
+        if (id === 1) correct = (ans === '2, 10, 30');
+        if (id === 2) correct = (ans === 'd');
+        if (correct) {
+          statusMap[id] = 'Correct';
+          feedback.textContent = '✅ Correct!';
+          feedback.style.color = 'green';
+          statusEl.textContent = '🟢';
+          launchConfetti();
+        } else {
+          statusMap[id] = 'Incorrect';
+          feedback.textContent = '❌ Incorrect. Try again.';
+          feedback.style.color = 'red';
+          statusEl.textContent = '🔴';
+        }
+        saveStatus();
+        renderTasks();
+      };
+    });
+  }
+
+  function updateProfileUI() {
+    const statuses = Object.values(statusMap);
+    const solved = statuses.filter(s => s === 'Correct').length;
+    solvedCount.textContent = solved;
+    ratingPts.textContent = solved * 10;
+  }
+
+  window.onload = () => {
+    const u = localStorage.getItem('user');
+    if (!u) return window.location = 'login.html';
+    currentUser = JSON.parse(u).name;
+    document.getElementById('username').textContent = currentUser;
+    TASKS_KEY = 'quantilay_tasks_status_' + currentUser;
+    statusMap = JSON.parse(localStorage.getItem(TASKS_KEY) || '{}');
+    ['filter-difficulty','filter-topic','filter-status','sort-by']
+      .forEach(id => document.getElementById(id).onchange = renderTasks);
+    renderTasks();
+  };
+</script>
+</body>
+</html>

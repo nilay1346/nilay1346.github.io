@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Simulations – Quantilay</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f9fbfd; }
+    header, footer {
+      background: #fff;
+      padding: 15px 30px;
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    }
+    header { display: flex; align-items: center; gap: 20px; }
+    header img { height: 40px; cursor: pointer; }
+    .home-button {
+      background: #3a6ea5; color: white; border: none;
+      padding: 10px 18px; font-weight: 600; border-radius: 6px;
+      cursor: pointer; box-shadow: 0 3px 7px rgba(58,110,165,0.5);
+      transition: background 0.3s; text-decoration: none; font-size: 14px;
+    }
+    .home-button:hover { background: #275588; }
+    main { padding: 40px 30px; text-align: center; }
+    select, input, button {
+      padding: 8px; font-size: 14px; margin: 5px;
+      border-radius: 4px; border: 1px solid #ccc;
+    }
+    button { background: #3a6ea5; color: #fff; border: none; cursor: pointer; }
+    button:hover { background: #275588; }
+    .sim-message { font-size: 18px; color: #444; margin-top: 20px; }
+    .sim-label { font-weight: bold; font-size: 18px; margin-bottom: 10px; }
+    #doublePendulumContainer {
+      display: block; margin-top: 20px; text-align: center;
+    }
+    #pendulumCanvas { background: #fff; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="dashboard.html" class="home-button">Home</a>
+    <img src="logo.jpeg" alt="Logo" onclick="location.href='dashboard.html'">
+  </header>
+
+  <main>
+    <h1>🔬 Simulations</h1>
+    <label for="topicSelect"><strong>Select topic:</strong></label><br>
+    <select id="topicSelect">
+      <option value="">All</option>
+      <option value="Uniform Linear Motion">Uniform Linear Motion</option>
+      <option value="Variable Linear Motion">Variable Linear Motion</option>
+      <option value="Circular Motion">Circular Motion</option>
+      <option value="Oscillatory Motion">Oscillatory Motion</option>
+      <option value="Forces">Forces</option>
+      <option value="Friction Force">Friction Force</option>
+      <option value="Gravitational Force">Gravitational Force</option>
+      <option value="Tension Force">Tension Force</option>
+      <option value="Newton’s Laws">Newton’s Laws</option>
+      <option value="Electricity and Magnetism">Electricity and Magnetism</option>
+      <option value="Ohm’s Law">Ohm’s Law</option>
+      <option value="Current and Voltage">Current and Voltage</option>
+      <option value="Series and Parallel Circuits">Series and Parallel Circuits</option>
+      <option value="Circuit Elements">Circuit Elements</option>
+      <option value="Atomic and Molecular Physics">Atomic and Molecular Physics</option>
+      <option value="Electroscope">Electroscope</option>
+      <option value="Intermolecular Forces">Intermolecular Forces</option>
+    </select>
+    <div class="sim-message" id="simResult"></div>
+
+    <div id="doublePendulumContainer">
+      <div class="sim-label">1. Double Pendulum (Oscillatory Motion)</div>
+      Angle1: <input type="number" id="angle1Input" value="90" step="1">°
+      Angle2: <input type="number" id="angle2Input" value="90" step="1">°
+      <br>
+      Length1: <input type="number" id="length1Input" value="100" step="10">px
+      Length2: <input type="number" id="length2Input" value="100" step="10">px
+      <br>
+      Speed: <input type="range" id="speedInput" min="0.2" max="2" value="1" step="0.1">
+      <button id="restartBtn">Restart</button>
+      <button id="trailBtn">Toggle Trail</button>
+      <br><br>
+      <canvas id="pendulumCanvas" width="500" height="500"></canvas>
+    </div>
+  </main>
+
+  <footer>&copy; 2025 Quantilay</footer>
+
+  <script>
+    const topicSelect = document.getElementById('topicSelect');
+    const container = document.getElementById('doublePendulumContainer');
+    const simResult = document.getElementById('simResult');
+    const canvas = document.getElementById('pendulumCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let a1, a2, a1_v, a2_v, r1, r2, g, m1, m2;
+    let speed = 1, showTrail = true, trail = [];
+    let animId = null;
+
+    function initPendulum() {
+      a1 = +document.getElementById('angle1Input').value * Math.PI/180;
+      a2 = +document.getElementById('angle2Input').value * Math.PI/180;
+      r1 = +document.getElementById('length1Input').value;
+      r2 = +document.getElementById('length2Input').value;
+      m1 = m2 = 10; g = 1;
+      a1_v = a2_v = 0;
+      trail = [];
+      speed = +document.getElementById('speedInput').value;
+      if (animId !== null) cancelAnimationFrame(animId);
+      animate();
+    }
+
+    document.getElementById('restartBtn').addEventListener('click', initPendulum);
+    document.getElementById('trailBtn').addEventListener('click', () => {
+      showTrail = !showTrail;
+      if (!showTrail) trail = [];
+    });
+    document.getElementById('speedInput').addEventListener('input', e => {
+      speed = +e.target.value;
+    });
+
+    function step() {
+      const num1 = -g*(2*m1+m2)*Math.sin(a1)
+                 - m2*g*Math.sin(a1-2*a2)
+                 - 2*Math.sin(a1-a2)*m2*(a2_v*a2_v*r2 + a1_v*a1_v*r1*Math.cos(a1-a2));
+      const den1 = r1*(2*m1+m2 - m2*Math.cos(2*a1-2*a2));
+      const a1_a = num1/den1;
+
+      const num2 = 2*Math.sin(a1-a2)*(a1_v*a1_v*r1*(m1+m2)
+                 + g*(m1+m2)*Math.cos(a1)
+                 + a2_v*a2_v*r2*m2*Math.cos(a1-a2));
+      const den2 = r2*(2*m1+m2 - m2*Math.cos(2*a1-2*a2));
+      const a2_a = num2/den2;
+
+      a1_v += a1_a * speed;
+      a2_v += a2_a * speed;
+      a1 += a1_v * speed;
+      a2 += a2_v * speed;
+      a1_v *= 0.99; a2_v *= 0.99;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width/2, cy = canvas.height/3;
+      const x1 = cx + r1*Math.sin(a1), y1 = cy + r1*Math.cos(a1);
+      const x2 = x1 + r2*Math.sin(a2), y2 = y1 + r2*Math.cos(a2);
+
+      if (showTrail) {
+        trail.push({x: x2, y: y2});
+        ctx.beginPath();
+        for (let p of trail) ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = 'rgba(0,150,0,0.6)';
+        ctx.stroke();
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
+
+      ctx.beginPath(); ctx.arc(x1, y1, 10, 0, 2*Math.PI); ctx.fillStyle = 'blue'; ctx.fill();
+      ctx.beginPath(); ctx.arc(x2, y2, 10, 0, 2*Math.PI); ctx.fillStyle = 'red'; ctx.fill();
+    }
+
+    function animate() {
+      step();
+      draw();
+      animId = requestAnimationFrame(animate);
+    }
+
+    // при загрузке показываем все симуляции
+    simResult.textContent = '';
+    container.style.display = 'block';
+    initPendulum();
+
+    topicSelect.addEventListener('change', () => {
+      if (!topicSelect.value || topicSelect.value === 'Oscillatory Motion') {
+        simResult.textContent = '';
+        container.style.display = 'block';
+        if (topicSelect.value === 'Oscillatory Motion') initPendulum();
+      } else {
+        simResult.textContent = `Simulation for "${topicSelect.value}" is coming soon!`;
+        container.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
